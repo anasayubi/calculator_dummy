@@ -1,0 +1,31 @@
+Attempt test driven development - identify all of the use cases
+
+Understand this line in more detail:
+const HomePage({super.key});
+
+
+UI things to do:
+
+Add ProviderScope
+
+2) On pressing on charaters - replace 0 with character (only numbers)
+  a) handle multiple number presses
+3) Tests for basic calculations - create state machine
+  a) calculation and result add in test
+4) When too many characters - decrease size of characters
+  a) Decide a maximum number of chars
+
+
+DONE
+1) Height of buttons need to be updated to match actual calc app
+2) Button touchable area needs to increase - I should always touch some button
+  a) The on touch has a circle - make it this way
+5) Equal sign style match
+6) Add a bit of space from the bottom
+  a) dot needs to be moved up a bit
+4) Add line on top of keypad
+3) Add test case for back button
+  a) Add a back button on the app
+7) Create calculation sections: calculation and result
+  a) Create test case for initial 0
+1) Initial state of just a 0 in front
