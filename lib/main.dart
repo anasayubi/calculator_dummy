@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calculator_dummy/components/calculation_and_results_area.dart';
 import 'package:calculator_dummy/components/keypad.dart';
 import 'package:calculator_dummy/helpers.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: HomePage(),
+  runApp(ProviderScope(
+    child: MaterialApp(
+      home: HomePage(),
+    ),
   ));
 }
 

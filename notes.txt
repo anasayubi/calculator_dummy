@@ -5,15 +5,13 @@ const HomePage({super.key});
 
 
 UI things to do:
-
-Add ProviderScope
-
-2) On pressing on charaters - replace 0 with character (only numbers)
-  a) handle multiple number presses
 3) Tests for basic calculations - create state machine
   a) calculation and result add in test
 4) When too many characters - decrease size of characters
   a) Decide a maximum number of chars
+5) Floating point multiplication and division issues handle = division by 3
+6) disallow landscope mode
+7) divide by 0 issue resolve 
 
 
 DONE
@@ -29,3 +27,6 @@ DONE
 7) Create calculation sections: calculation and result
   a) Create test case for initial 0
 1) Initial state of just a 0 in front
+5) Empty button must not be tapable
+2) On pressing on charaters - replace 0 with character (only numbers)
+  a) handle multiple number presses

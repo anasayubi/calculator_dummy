@@ -1,20 +1,22 @@
-import 'package:calculator_dummy/clear_icon_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:calculator_dummy/helpers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
+import 'package:calculator_dummy/helpers.dart';
+import 'package:calculator_dummy/providers.dart';
 
-class KeypadKey extends StatelessWidget {
+class KeypadKey extends ConsumerWidget {
   final String text;
   final KeyType keyType;
 
   const KeypadKey(this.text, this.keyType, {super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Color? selectedTextColor;
     double? selectedFontSize;
     FontWeight? selectedFontWeight;
     double? selectedLineHeight;
+    VoidCallback? onTapFunc = () {};
 
     switch (keyType) {
       case KeyType.ACKey:
@@ -25,6 +27,12 @@ class KeypadKey extends StatelessWidget {
       case KeyType.numericKey:
         selectedFontSize = 35;
         selectedTextColor = blackColor;
+        onTapFunc = () {
+          ref.read(calculationProvider.notifier).state = text;
+          ref.read(resultProvider.notifier).state = "=$text";
+          ref.read(calcViewModeProvider.notifier).state =
+              CalcViewMode.highlightCalculation;
+        };
         break;
       case KeyType.percentageKey:
         selectedFontSize = 30;
@@ -60,6 +68,7 @@ class KeypadKey extends StatelessWidget {
       case KeyType.emptyKey:
         selectedFontSize = 30;
         selectedTextColor = orangeColor;
+        onTapFunc = null;
         break;
       // KeyType.clearKey case where these values are not used
       default:
@@ -81,10 +90,11 @@ class KeypadKey extends StatelessWidget {
         ),
       );
     }
-    // In ase of all other type of keys
+    // In case of all other type of keys
     else {
       return TextButton(
-        onPressed: () {},
+        // onPressed: () {},
+        onPressed: onTapFunc,
         onLongPress: null,
         child: Text(text),
         style: TextButton.styleFrom(
