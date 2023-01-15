@@ -23,15 +23,33 @@ class KeypadKey extends ConsumerWidget {
         selectedFontSize = 25;
         selectedTextColor = orangeColor;
         selectedFontWeight = FontWeight.w500;
+        onTapFunc = () {
+          ref.read(calculationProvider.notifier).state = '0';
+          ref.read(calcStateProvider.notifier).state = CalcState.zeroState;
+          ref.read(calcViewModeProvider.notifier).state = CalcViewMode.justZero;
+          // A decimal point can be inserted after this
+          ref.read(decimalDotInsertableProvider.notifier).state = true;
+        };
         break;
       case KeyType.numericKey:
         selectedFontSize = 35;
         selectedTextColor = blackColor;
         onTapFunc = () {
-          ref.read(calculationProvider.notifier).state = text;
-          ref.read(resultProvider.notifier).state = "=$text";
-          ref.read(calcViewModeProvider.notifier).state =
-              CalcViewMode.highlightCalculation;
+          CalcState calcState = ref.read(calcStateProvider.notifier).state;
+
+          // On pressing '0' nothing happens - remains in zero state
+          if (calcState == CalcState.zeroState && text != '0') {
+            ref.read(calculationProvider.notifier).state = text;
+            // ref.read(resultProvider.notifier).state = "=$text";
+            ref.read(calcViewModeProvider.notifier).state =
+                CalcViewMode.highlightCalculation;
+            ref.read(calcStateProvider.notifier).state = CalcState.numericState;
+          }
+
+          // 0s can be typed in now in this state
+          if (calcState == CalcState.numericState) {
+            ref.read(calculationProvider.notifier).state += text;
+          }
         };
         break;
       case KeyType.percentageKey:
@@ -64,6 +82,29 @@ class KeypadKey extends ConsumerWidget {
       case KeyType.dotKey:
         selectedFontSize = 37;
         selectedTextColor = blackColor;
+        onTapFunc = () {
+          CalcState calcState = ref.read(calcStateProvider.notifier).state;
+          bool decimalDotInsertable =
+              ref.read(decimalDotInsertableProvider.notifier).state;
+
+          // print(calcState);
+          if (decimalDotInsertable) {
+            if (calcState == CalcState.numericState) {
+              ref.read(calculationProvider.notifier).state += '.';
+            }
+
+            if (calcState == CalcState.zeroState) {
+              ref.read(calculationProvider.notifier).state = '0.';
+              ref.read(calcViewModeProvider.notifier).state =
+                  CalcViewMode.highlightCalculation;
+              ref.read(calcStateProvider.notifier).state =
+                  CalcState.numericState;
+            }
+
+            // decimal dot not insertable anymore
+            ref.read(decimalDotInsertableProvider.notifier).state = false;
+          }
+        };
         break;
       case KeyType.emptyKey:
         selectedFontSize = 30;
@@ -93,10 +134,8 @@ class KeypadKey extends ConsumerWidget {
     // In case of all other type of keys
     else {
       return TextButton(
-        // onPressed: () {},
         onPressed: onTapFunc,
         onLongPress: null,
-        child: Text(text),
         style: TextButton.styleFrom(
           fixedSize: Size.fromHeight(75),
           shape: CircleBorder(),
@@ -108,6 +147,19 @@ class KeypadKey extends ConsumerWidget {
             height: selectedLineHeight,
           ),
         ),
+        // If not an AC key then just show text. In case AC key then text will
+        //  be determined based on state
+        child: (keyType != KeyType.ACKey)
+            ? Text(text)
+            // If AC key type
+            : Consumer(builder: (context, ref, _) {
+                final calcState = ref.watch(calcStateProvider);
+                if (calcState == CalcState.zeroState) {
+                  return Text('AC');
+                } else {
+                  return Text('C');
+                }
+              }),
       );
     }
   }

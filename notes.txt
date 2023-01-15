@@ -11,7 +11,13 @@ UI things to do:
   a) Decide a maximum number of chars
 5) Floating point multiplication and division issues handle = division by 3
 6) disallow landscope mode
-7) divide by 0 issue resolve 
+7) divide by 0 issue resolve
+
+Evalution cases later on - eval pressing 0 at zero state and how other numbers are different
+
+Add case:
+type decimals -> ac -> type decimals again
+
 
 
 DONE
@@ -30,3 +36,5 @@ DONE
 5) Empty button must not be tapable
 2) On pressing on charaters - replace 0 with character (only numbers)
   a) handle multiple number presses
+Side notes:
+- add test for AC and C as well

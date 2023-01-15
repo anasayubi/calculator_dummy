@@ -23,6 +23,7 @@ class CalculationAndResultsArea extends ConsumerWidget {
                 // Calculation area
                 if (calcViewMode != CalcViewMode.justZero)
                   Row(
+                    key: Key('calculationArea'),
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
@@ -38,6 +39,7 @@ class CalculationAndResultsArea extends ConsumerWidget {
                   ),
                 // Results Area
                 Padding(
+                  key: Key('resultsArea'),
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
