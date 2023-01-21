@@ -17,6 +17,28 @@ class KeypadKey extends ConsumerWidget {
     FontWeight? selectedFontWeight;
     double? selectedLineHeight;
     VoidCallback? onTapFunc = () {};
+    // For all symbols - kept seperate because will be appied on: mult, div, plus and minus
+    onTapFuncSymbols() {
+      CalcState calcState = ref.read(calcStateProvider.notifier).state;
+
+      if (calcState == CalcState.numericState) {
+        ref.read(calculationProvider.notifier).state += text;
+        ref.read(calcStateProvider.notifier).state = CalcState.symbolState;
+        // A decimal point can be inserted after this
+        ref.read(decimalDotInsertableProvider.notifier).state = true;
+      }
+
+      // Replace symbol if still in symbol state with the clicked symbol
+      if (calcState == CalcState.symbolState) {
+        String calculation = ref.read(calculationProvider.notifier).state;
+        String calculationLastCharRemoved =
+            calculation.substring(0, calculation.length - 1);
+        ref.read(calculationProvider.notifier).state =
+            calculationLastCharRemoved + text;
+        // A decimal point can be inserted after this
+        ref.read(decimalDotInsertableProvider.notifier).state = true;
+      }
+    }
 
     switch (keyType) {
       case KeyType.ACKey:
@@ -47,8 +69,10 @@ class KeypadKey extends ConsumerWidget {
           }
 
           // 0s can be typed in now in this state
-          if (calcState == CalcState.numericState) {
+          if (calcState == CalcState.numericState ||
+              calcState == CalcState.symbolState) {
             ref.read(calculationProvider.notifier).state += text;
+            ref.read(calcStateProvider.notifier).state = CalcState.numericState;
           }
         };
         break;
@@ -61,17 +85,20 @@ class KeypadKey extends ConsumerWidget {
         selectedFontSize = 45;
         selectedTextColor = orangeColor;
         selectedFontWeight = FontWeight.w300;
+        onTapFunc = onTapFuncSymbols;
         break;
       case KeyType.minusKey:
         selectedFontSize = 87;
         selectedTextColor = orangeColor;
         selectedFontWeight = FontWeight.w200;
         selectedLineHeight = 0.84;
+        onTapFunc = onTapFuncSymbols;
         break;
       case KeyType.symbolKey:
         selectedFontSize = 42;
         selectedTextColor = orangeColor;
         selectedFontWeight = FontWeight.w300;
+        onTapFunc = onTapFuncSymbols;
         break;
       case KeyType.equalsKey:
         selectedFontSize = 55;
@@ -87,10 +114,12 @@ class KeypadKey extends ConsumerWidget {
           bool decimalDotInsertable =
               ref.read(decimalDotInsertableProvider.notifier).state;
 
-          // print(calcState);
           if (decimalDotInsertable) {
-            if (calcState == CalcState.numericState) {
+            if (calcState == CalcState.numericState ||
+                calcState == CalcState.symbolState) {
               ref.read(calculationProvider.notifier).state += '.';
+              ref.read(calcStateProvider.notifier).state =
+                  CalcState.numericState;
             }
 
             if (calcState == CalcState.zeroState) {

@@ -15,8 +15,9 @@ UI things to do:
 
 Evalution cases later on - eval pressing 0 at zero state and how other numbers are different
 
-Add case:
-type decimals -> ac -> type decimals again
+Apply to all symbols - create test cases
+Symbol keys and other keys as well (minus and division)
+create a single func for all
 
 
 
@@ -38,3 +39,6 @@ DONE
   a) handle multiple number presses
 Side notes:
 - add test for AC and C as well
+
+Add case:
+type decimals -> ac -> type decimals again

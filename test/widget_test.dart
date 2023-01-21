@@ -365,20 +365,208 @@ void main() {
   });
 
   // % symbol will not be tested
-  testWidgets(
-    'Add numbers & symbols and verfy calculation area',
-    (WidgetTester tester) async {
-      final testWidget = ProviderScope(child: MaterialApp(home: HomePage()));
-      await tester.pumpWidget(testWidget);
+  testWidgets('Add numbers & symbols and verfy calculation area',
+      (WidgetTester tester) async {
+    final testWidget = RootRestorationScope(
+      restorationId: 'testing',
+      child: ProviderScope(
+        child: MaterialApp(home: HomePage()),
+      ),
+    );
+    await tester.pumpWidget(testWidget);
+    await tester.pumpWidget(testWidget);
 
-      // '1+1'
-      // await tester.tap(find.byKey(Key('1_button')));
-      // await tester.pumpAndSettle();
-      // await tester.tap(find.byKey(Key('plusButton')));
-      // await tester.pumpAndSettle();
-      // await tester.tap(find.byKey(Key('1_button')));
-      // await tester.pumpAndSettle();
-      // expect(find.text('1+1'), findsOneWidget);
-    },
-  );
+    // '1+1'
+    await tester.tap(find.byKey(Key('1_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('1_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('1+1'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 60+0.28
+    await tester.tap(find.byKey(Key('6_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('2_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('8_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('60+0.28'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 98.6+27.5 - doubling of points
+    await tester.tap(find.byKey(Key('9_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('8_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('6_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('2_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('7_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('5_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('98.6+27.5'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 1+.7
+    expect(find.text('AC'), findsNWidgets(1));
+    await tester.tap(find.byKey(Key('1_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('7_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    expect(find.text('1+.7'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 0.17+.23+.09 - doubling of points
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('1_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('7_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('2_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('3_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('9_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('0.17+.23+.09'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 60+0.0018
+    await tester.tap(find.byKey(Key('6_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('1_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('8_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    expect(find.text('60+0.0018'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 0.12+86 - doubling of add symbol
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('1_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('2_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('8_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('6_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('0.12+86'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // 290×23.78 - multiplication replaces addition
+    await tester.tap(find.byKey(Key('2_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('9_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('0_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('plusButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('multButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('2_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('3_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('dotButton')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('7_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Key('8_button')));
+    await tester.pumpAndSettle();
+    expect(find.text('290×23.78'), findsOneWidget);
+    expect(find.text('C'), findsNWidgets(1));
+    await tester.restartAndRestore();
+
+    // .12+0.37 - doubling of add symbol & dot points
+    // Multiple symbols in a row
+
+    // doubling and pretition of + and etc
+    // Add other symbols as well - all of them
+  });
 }
